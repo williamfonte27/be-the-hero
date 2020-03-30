@@ -1,4 +1,4 @@
-# be-the-hero
+# BeTheHero
 Repositório contendo aplicação desenvolvida na Semana OmniStack 11
 
 Back-end
