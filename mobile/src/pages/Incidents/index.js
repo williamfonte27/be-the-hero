@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { View, FlatList, Image, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, Image, Text, TouchableOpacity, TextInput } from 'react-native';
 
 import api from '../../services/api';
 
@@ -16,6 +16,8 @@ export default function Incidents() {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
 
+    const [search, setSearch] = useState('');
+
     const navigation = useNavigation();
 
     function navigateToDetail(incident) {
@@ -23,11 +25,11 @@ export default function Incidents() {
     }
 
     async function loadIncidents() {
-        if(loading){
+        if (loading) {
             return;
         }
 
-        if(total > 0 && incidents.length == total){
+        if (total > 0 && incidents.length == total) {
             return;
         }
 
@@ -37,7 +39,9 @@ export default function Incidents() {
             params: { page }
         });
 
-        setIncidents([ ...incidents, ...response.data]);
+
+
+        setIncidents([...incidents, ...response.data]);
         setTotal(response.headers['x-total-count']);
         setPage(page + 1);
         setLoading(false);
@@ -46,6 +50,11 @@ export default function Incidents() {
     useEffect(() => {
         loadIncidents();
     }, []);
+
+    async function searchOngs() {
+        const response = await api.get(`incidents/${search}`);
+        setIncidents(response.data);
+    }
 
     return (
         <View style={styles.container}>
@@ -57,7 +66,22 @@ export default function Incidents() {
             </View>
 
             <Text style={styles.title}>Bem-vindo!</Text>
-            <Text style={styles.description}>Escolha um dos cados abaixo e salve o dia!</Text>
+            <Text style={styles.description}>Escolha um dos casos abaixo e salve o dia!</Text>
+
+            <View style={styles.searchTollbar}>
+                <TextInput
+                    placeholder="Digite o nome da ONG"
+                    style={styles.searchBar}
+                    onChangeText={(val) => setSearch(val)}
+
+                />
+                <TouchableOpacity
+                    style={styles.search}
+                    onPress={() => searchOngs()}
+                >
+                    <Feather style={styles.searchButtonText} name="search" size={16} color="#FFF" />
+                </TouchableOpacity>
+            </View>
 
             <FlatList
                 style={styles.incidentsList}
@@ -76,10 +100,10 @@ export default function Incidents() {
 
                         <Text style={styles.incidentProperty}>VALOR: </Text>
                         <Text style={styles.incidentValue}>{
-                            Intl.NumberFormat('pt-BR', { 
-                                style: 'currency', 
-                                currency: 'BRL' 
-                                }).format(incident.value)}
+                            Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL'
+                            }).format(incident.value)}
                         </Text>
 
                         <TouchableOpacity

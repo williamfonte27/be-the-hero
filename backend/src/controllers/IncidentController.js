@@ -24,6 +24,24 @@ module.exports = {
         return response.json(incidents);
     },
 
+    async search(request, response) {
+        const { name } = request.params;
+
+        const incidentsOng = await connection('incidents')
+            .join('ongs', 'ongs.id', '=', 'incidents.ong_id')
+            .where('name', 'like', `%${name}%`)
+            .select([
+                'incidents.*',
+                'ongs.name',
+                'ongs.email',
+                'ongs.whatsapp',
+                'ongs.city',
+                'ongs.uf',
+            ]);
+
+        return response.json(incidentsOng);
+    },
+
     async create(request, response) {
         const { title, description, value } = request.body;
         const ong_id = request.headers.authorization;

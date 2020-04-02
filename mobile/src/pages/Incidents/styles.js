@@ -47,7 +47,7 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
         marginBottom: 16,
     },
-    
+
     incidentProperty: {
         fontSize: 14,
         color: '#41414d',
@@ -71,6 +71,35 @@ export default StyleSheet.create({
         color: '#E02041',
         fontSize: 15,
         fontWeight: 'bold'
-    }
+    },
+
+    searchTollbar: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+
+    },
+
+    searchBar: {
+        width: '80%',
+        marginTop: 12,
+        padding: 12,
+        borderWidth: 1,
+        borderColor: '#E02041'
+    },
+
+    search: {
+        width: '20%',
+        backgroundColor: '#E02041',
+        padding: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 12,
+    },
+
+    searchButtonText: {
+        color: '#FFF',
+        fontWeight: 'bold',
+    },
 
 });
